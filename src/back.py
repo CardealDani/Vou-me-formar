@@ -25,6 +25,10 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 def landingPage():
     return {"Mensagem:":"Teste Levi"}
 
+@app.get("/api/saudacao")
+def saudacao():
+    return {"message": "Olá, mundo!"}
+
 @app.get('/obrigatorias')
 def obrigatorias():
     obrig = []
