@@ -1,30 +1,29 @@
-from fastapi import FastAPI, UploadFile, File, Form
-
+import os
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from fastapi.staticfiles import StaticFiles
-
-
+from fastapi.staticfiles import StaticFiles
 import banco
-
 
 app = FastAPI()
 
-
-
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],  # ou ['http://seu-dominio.com']
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Subindo dois níveis para a raiz do projeto
+static_dir = os.path.join(base_dir, "static")
+
+# Monta a pasta 'static'
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 
 @app.get('/static/landing-page')
 def landingPage():
     return {"Mensagem:":"Teste Levi"}
-
 
 @app.get('/obrigatorias')
 def obrigatorias():
@@ -37,10 +36,8 @@ def obrigatorias():
     s6 = banco.excel_obrigatorias.get(f'AA3:AD{banco.len_semestre6}')
     s7 = banco.excel_obrigatorias.get(f'AF3:AI{banco.len_semestre7}')
     s8 = banco.excel_obrigatorias.get(f'AK3:AN{banco.len_semestre8}')
-    obrig.extend((s1, s2, s3, s4,s5, s6, s7, s8))
-
+    obrig.extend((s1, s2, s3, s4, s5, s6, s7, s8))
     return obrig
-
 
 @app.get('/eletivas')
 def eletivas():
@@ -52,13 +49,9 @@ def eletivas():
 
 @app.get('/optativas')
 def optativas():
-
     optativa = banco.excel_optativas.get(f'B2:F{banco.len_optativas}')
     return optativa
-
 
 @app.get('/final')
 def final():
     return ('Acho que deu bom')
-
-
