@@ -3,10 +3,7 @@
   "builds": [
     {
       "src": "src/back.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/python"
     },
     {
       "src": "static/**",
@@ -26,9 +23,5 @@
       "src": "/(.*)",
       "dest": "/src/back.py"
     }
-  ],
-  "env": {
-    "VIRTUAL_ENV": "/vercel/venv"
-  },
-  "post-build": "bash build.sh"
+  ]
 }
